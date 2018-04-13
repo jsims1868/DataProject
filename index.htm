@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+	<head> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></head>>  
+		<title> Library Data Project </title>
+		<style>
+			.card{
+				width:290px;
+				height: 440px;
+				padding:15px;
+				margin:10px;
+				display:inline-block;
+				border: 15px solid transparent;
+				border-radius:10px;
+				box-shadow:black 5px 5px 5px;
+				background: linear-gradient(to bottom right,rgb(36, 238, 221),rgb(207, 123, 207));
+			} 
+			h2{
+				font-family:"Courier New";
+				font-size: 20pt;
+				text-decoration: underline;
+			}
+			p,a{
+				font-size:14pt;
+				font-family:"Arial";
+			}
+			img{
+				width:90%;
+				margin:5px;
+				border-radius:10px;
+				box-shadow:black 5px 5px 5px;
+			}
+			a{
+				background-color:rgb(255, 243, 137);
+				text-decoration:none;
+				color:black;
+				font-weight:bold;
+				padding:10px;
+				border-radius:10px;
+				box-shadow:black 5px 5px 5px;
+			} 
+		</style>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+
+		<script type="text/template" id="libraryTemplate">
+		<!-- This section is to define the HTML template-->
+		<div class='card'>
+			<h2> {{name}}</h2>
+			<p>{{address}} , {{city}}, {{borough}}</p>
+			<p>Zip: {{postcode}}</p>
+			<p>Monday: {{mn}}</p>
+			<p>Tuesday: {{tu}}</p>
+			<p>Wednesday: {{we}}</p>
+			<p>Thursday: {{th}}</p>
+			<p>Friday: {{fr}}</p>
+			<p>Saturday: {{sa}}</p>
+			<p>Sunday: {{su}}</p>
+			<a href='https://www.google.com/maps/?q=+{{latitude}}+,+{{longitude}}' target='_blank'>Map</a>"		     
+		</div>
+		</script>
+
+		<script>
+
+		function loadJSON(){       	
+			$.getJSON("https://data.cityofnewyork.us/resource/b67a-vkqb.json", function(result){        
+				displayQueensLibraryInfo(result);
+			});	
+		}
+		function displayQueensLibraryInfo(data){
+			var build = "";
+			var output = document.getElementById("op");
+			var template = document.getElementById("libraryTemplate").innerHTML;
+			
+			for(i=0; i<data.length; i++){  
+				build += Mustache.render(template, data[i]);
+			}
+			output.innerHTML = build;    
+		}
+		</script>
+
+		<body onload="loadJSON()">
+			<h1> Queens Library Info <i class="fa fa-book"></i></h1>
+			<div id="op"></div>
+		</body>   
+</html>
